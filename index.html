@@ -1,0 +1,131 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Do List</title>
+    <script src="https://kit.fontawesome.com/969ab7f9a1.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+      body{
+    background: #391d49;
+}
+
+.container{
+    max-width: 400px;
+}
+
+input[type=text],
+input[type=text]:focus{
+    color: #fff;
+    border: none;
+    background: rgba(0, 0, 0,0.2);
+    max-width: 400px;
+}
+
+.todos li{
+    background: #423a6f;
+}
+
+.delete{
+    cursor: pointer;
+}
+.filtered{
+    display: none !important;
+}
+    </style>
+</head>
+<body>
+<div class="container">
+    <header class="text-center text-light my-4">
+        <h1 class="mb-4">To Do List</h1>
+        <form class="search">
+          <input class="form-control m-auto" type="text" name="search" placeholder="Search To Do..." />
+        </form>
+      </header>
+  
+      <ul class="list-group todos mx-auto text-light">
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <span>play mariokart</span>
+          <i class="far fa-trash-alt delete"></i>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <span>defeat ganon in zelda</span>
+          <i class="far fa-trash-alt delete"></i>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <span>make a veggie pie</span>
+          <i class="far fa-trash-alt delete"></i>
+        </li>
+      </ul>
+
+      <form class="add text-center my-4">
+        <label class="text-light">Add New To Do.</label>
+        <input type="text" name="add" class="form-control m-auto v1" />
+        <input type="submit" class="btn btn-light" style=" margin-top: 30;"/>
+      </form>
+
+    </div>
+    
+    <script >
+      const addForm = document.querySelector('.add');
+const list = document.querySelector('.todos');
+const search = document.querySelector('.search input');
+
+
+//Adding New To Do
+let generateTemplate = todo => {
+    
+    const html = `
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        <span>${todo}</span>
+        <i class="far fa-trash-alt delete"></i>
+    </li>`
+
+    list.innerHTML += html;
+};
+
+addForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const todo = addForm.add.value.trim();  
+    if(todo.length){  
+        generateTemplate(todo); 
+        addForm.reset();
+    }
+});   
+
+
+//Removing an Existing To do.
+
+ list.addEventListener('click', e => {
+
+    if(e.target.classList.contains('delete')){
+        e.target.parentElement.remove();
+    }
+
+ });
+
+// Search To Do.
+
+const filterToDo = (term) => {
+
+    Array.from(list.children)
+    .filter(todo => !todo.textContent.toLowerCase().includes(term))
+    .forEach(todo => todo.classList.add('filtered'));
+
+    Array.from(list.children)
+    .filter(todo => todo.textContent.toLowerCase().includes(term))
+    .forEach(todo => todo.classList.remove('filtered'));
+
+};
+
+search.addEventListener('keyup', () => {
+
+const term = search.value.trim().toLowerCase();
+filterToDo(term);
+
+});
+    </script>
+</body>
+</html>
